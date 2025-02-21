@@ -5,7 +5,7 @@ on:
     branches:
       - main  # Change if using a different branch
     paths:
-      - "blog-posts/*.md"  # Change folder if needed
+      - "posts/*.md"  # Change folder if needed
 
 jobs:
   publish-to-hashnode:
