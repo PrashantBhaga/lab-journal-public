@@ -1,6 +1,6 @@
-
 ---
-title: Prompt Engineering (prompting) is just  delegating effectively
+title: Prompting is just about delegating well
+publishAs: "@PrashantBhaga"
 ---
 
 Good prompt ---> Great Prompt

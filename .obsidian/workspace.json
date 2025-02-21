@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "posts/Prompting Engineering is just about delegating effectively.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "Prompting Engineering is just about delegating effectively"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "posts/Prompting Engineering is just about delegating effectively.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for README"
+              "title": "Backlinks for Prompting Engineering is just about delegating effectively"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "posts/Prompting Engineering is just about delegating effectively.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from README"
+              "title": "Outgoing links from Prompting Engineering is just about delegating effectively"
             }
           },
           {
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md",
+                "file": "posts/Prompting Engineering is just about delegating effectively.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of README"
+              "title": "Outline of Prompting Engineering is just about delegating effectively"
             }
           }
         ]
@@ -168,13 +168,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "73eedc16e752ed4f",
+  "active": "26f2ee0ffea17d35",
   "lastOpenFiles": [
     "draft-67b85cba04846a6ab7ba753e.md",
+    "README.md",
     "Prompting Engineering is just about delegating effectively.md",
     "posts/Prompting Engineering is just about delegating effectively.md",
     "posts",
-    "untitled folder",
-    "README.md"
+    "untitled folder"
   ]
 }
