@@ -19,7 +19,7 @@ jobs:
 
       - name: Convert Markdown & Publish to Hashnode
         run: |
-          for file in blog-posts/*.md; do
+          for file in posts/*.md; do
             [ -e "$file" ] || continue
             TITLE=$(head -n 1 "$file" | sed 's/# //')
             CONTENT=$(jq -Rs . < "$file")
