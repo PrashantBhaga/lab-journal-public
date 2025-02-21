@@ -1,0 +1,1 @@
+I'll be sharing my notes from my "lab" publicly. These are all the projects Im currently working on, and most of them will be written in this way- as a journal type of an entry that I usually write to myself to understand the project- what it doesnt, what I'd like it to do, any links etc.
