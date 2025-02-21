@@ -33,7 +33,7 @@ jobs:
                   "input": {
                     "title": "'"$TITLE"'",
                     "contentMarkdown": '"$CONTENT"',
-                    "isPartOfPublication": { "publicationId": "YOUR_PUBLICATION_ID" },
+                   "isPartOfPublication": { "publicationId": "67b85c96db24890a6b202cb9" }
                     "publishAs": "YOUR_HASHNODE_USERNAME"
                   }
                 }
