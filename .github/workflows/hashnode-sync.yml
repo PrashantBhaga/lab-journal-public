@@ -1,0 +1,41 @@
+name: Sync Markdown Posts to Hashnode
+
+on:
+  push:
+    branches:
+      - main  # Change if using a different branch
+    paths:
+      - "blog-posts/*.md"  # Change folder if needed
+
+jobs:
+  publish-to-hashnode:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install jq for JSON parsing
+        run: sudo apt-get install jq -y
+
+      - name: Convert Markdown & Publish to Hashnode
+        run: |
+          for file in blog-posts/*.md; do
+            [ -e "$file" ] || continue
+            TITLE=$(head -n 1 "$file" | sed 's/# //')
+            CONTENT=$(jq -Rs . < "$file")
+
+            curl -X POST "https://api.hashnode.com" \
+              -H "Content-Type: application/json" \
+              -H "Authorization: ${{ secrets.HASHNODE_API_KEY }}" \
+              --data '{
+                "query": "mutation createStory($input: CreateStoryInput!) { createStory(input: $input) { id } }",
+                "variables": {
+                  "input": {
+                    "title": "'"$TITLE"'",
+                    "contentMarkdown": '"$CONTENT"',
+                    "isPartOfPublication": { "publicationId": "YOUR_PUBLICATION_ID" },
+                    "publishAs": "YOUR_HASHNODE_USERNAME"
+                  }
+                }
+              }'
+          done
