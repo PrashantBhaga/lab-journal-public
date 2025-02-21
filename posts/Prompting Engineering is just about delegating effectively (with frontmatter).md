@@ -1,3 +1,7 @@
+---
+title: Prompting is just about delegating well
+publishAs: "@PrashantBhaga"
+---
 
 Good prompt ---> Great Prompt
 
