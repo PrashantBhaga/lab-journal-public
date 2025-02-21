@@ -1,10 +1,15 @@
-Good prompt ---> Great Prompt (mostly selling Gen AI in the google prompting essentials course)
+
+---
+title: Prompt Engineering (prompting) is just  delegating effectively
+---
+
+Good prompt ---> Great Prompt
 
 ## Prompting is just a skillset
 
 Turning things that are a pain, to take a few seconds using AI- telling Ai what we would like it to generate.
 Be precise in defining what we need- its the same way I would ask an employee and team mate for what i need them to do / achieve #LeadingAndManaging/HowToAskAnEmployeeWhatToDo
-So for me this will be a great way to learn to lead better as well- how to communicate with anyone and explain what exactly im looking for.
+So for me this will be a great way to learn to lead better as well- how to communicate with anyone and explain what exactly Im looking for.
 
 ## What I'll be able to do
 - Framework for writing prompts 
