@@ -3,9 +3,9 @@ name: Sync Markdown Posts to Hashnode
 on:
   push:
     branches:
-      - main  # Change if using a different branch
+      - main
     paths:
-      - "posts/*.md"  # Change folder if needed
+      - "posts/*.md"
 
 jobs:
   publish-to-hashnode:
@@ -22,7 +22,7 @@ jobs:
           for file in posts/*.md; do
             [ -e "$file" ] || continue
             TITLE=$(head -n 1 "$file" | sed 's/# //')
-            CONTENT=$(jq -Rs . < "$file")
+            CONTENT=$(cat "$file" | sed ':a;N;$!ba;s/\n/\\n/g')
 
             curl -X POST "https://api.hashnode.com" \
               -H "Content-Type: application/json" \
@@ -32,9 +32,10 @@ jobs:
                 "variables": {
                   "input": {
                     "title": "'"$TITLE"'",
-                    "contentMarkdown": '"$CONTENT"',
-                   "isPartOfPublication": { "publicationId": "67b85c96db24890a6b202cb9" }
-                    "publishAs": "YOUR_HASHNODE_USERNAME"
+                    "contentMarkdown": "'"$CONTENT"'",
+                    "isPartOfPublication": { "publicationId": "67b85c96db24890a6b202cb9" },
+                    "publishAs": "YOUR_HASHNODE_USERNAME",
+                    "isDraft": false
                   }
                 }
               }'
