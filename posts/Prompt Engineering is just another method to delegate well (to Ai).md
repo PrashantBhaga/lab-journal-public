@@ -1,3 +1,13 @@
+---
+title: Prompt Engineering is just another method to delegate well (to Ai)
+subtitle: Delegating successfully to your AI model, Agents, and team
+tags:
+  - "#Ai/Agents"
+  - "#Ai/Models"
+  - "#LeadingAndManaging/HowToAskAnEmployeeWhatToDo"
+cover: Optional cover image URL
+---
+
 
 Good prompt ---> Great Prompt
 
