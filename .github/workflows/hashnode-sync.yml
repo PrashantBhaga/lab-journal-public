@@ -14,26 +14,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: List Files in Posts Directory
-        run: |
-          echo "Contents of posts directory:"
-          ls -la posts/
-          
-      - name: Check File Content
-        run: |
-          for file in posts/*.md; do
-            echo "Processing file: $file"
-            echo "First few lines of content:"
-            head -n 5 "$file"
-            echo "-------------------"
-          done
-
-      - name: Test Hashnode API Connection
-        run: |
-          echo "Testing Hashnode API connection..."
-          curl -s -I -H "Authorization: ${{ secrets.HASHNODE_API_KEY }}" \
-               -H "Content-Type: application/json" \
-               https://api.hashnode.com
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
       - name: Publish to Hashnode
         env:
@@ -42,54 +26,52 @@ jobs:
         run: |
           for file in posts/*.md; do
             if [ -f "$file" ]; then
-              echo "Processing: $file"
+              echo "Processing file: $file"
               
-              # Read and validate frontmatter
-              if grep -q "^---" "$file"; then
-                echo "Found frontmatter in $file"
-              else
-                echo "Warning: No frontmatter found in $file"
-              fi
+              # Extract title and tags from the file content
+              title=$(grep -A1 "title" "$file" | tail -n1 | xargs)
+              tags=$(grep -A1 "tags" "$file" | tail -n1 | tr ' ' ',')
               
-              # Extract title from frontmatter or filename
-              title=$(sed -n '/^title:/p' "$file" | sed 's/^title: *//')
+              # If no title found, use filename
               if [ -z "$title" ]; then
                 title=$(basename "$file" .md)
-                echo "No title found in frontmatter, using filename: $title"
-              else
-                echo "Found title: $title"
               fi
               
-              # Read content with error checking
-              if content=$(cat "$file"); then
-                echo "Successfully read file content"
-                
-                # Attempt to post to Hashnode
-                response=$(curl -s -X POST https://api.hashnode.com \
-                  -H "Content-Type: application/json" \
-                  -H "Authorization: ${{ secrets.HASHNODE_API_KEY }}" \
-                  -d "{
-                    \"query\": \"mutation createStory(\$input: CreateStoryInput!) { createStory(input: \$input) { success message } }\",
-                    \"variables\": {
-                      \"input\": {
-                        \"title\": \"$title\",
-                        \"contentMarkdown\": $(echo "$content" | jq -R -s .),
-                        \"publicationId\": \"$PUBLICATION_ID\",
-                        \"isPartOfPublication\": {\"publicationId\": \"$PUBLICATION_ID\"},
-                        \"tags\": []
-                      }
-                    }
-                  }")
-                
-                echo "Hashnode API Response:"
-                echo "$response"
-                
-                if echo "$response" | grep -q "error"; then
-                  echo "Error detected in response"
-                  exit 1
-                fi
-              else
-                echo "Failed to read file content"
+              echo "Title: $title"
+              echo "Tags: $tags"
+              
+              # Get content after the frontmatter table
+              content=$(awk '/^$/{p=1;next} p{print}' "$file")
+              
+              # Escape content for JSON
+              content_escaped=$(echo "$content" | jq -Rs .)
+              
+              # Create the GraphQL mutation
+              query='{
+                "query": "mutation createPublication($input: CreateStoryInput!) { createStory(input: $input) { success message post { _id title slug } } }",
+                "variables": {
+                  "input": {
+                    "title": "'"$title"'",
+                    "contentMarkdown": '"$content_escaped"',
+                    "isPartOfPublication": {
+                      "publicationId": "'"$PUBLICATION_ID"'"
+                    },
+                    "tags": ['"$(echo "$tags" | sed 's/#//g' | sed 's/\([^,]*\)/{"_id": "", "name": "\1", "slug": "\1"}/g' | tr '\n' ',' | sed 's/,$//')"']
+                  }
+                }
+              }'
+              
+              echo "Sending request to Hashnode..."
+              response=$(curl -s -X POST https://api.hashnode.com \
+                -H "Content-Type: application/json" \
+                -H "Authorization: $HASHNODE_API_KEY" \
+                -d "$query")
+              
+              echo "Response from Hashnode:"
+              echo "$response" | jq '.'
+              
+              if echo "$response" | grep -q "error"; then
+                echo "Error publishing to Hashnode"
                 exit 1
               fi
             fi
