@@ -27,7 +27,7 @@ jobs:
         env:
           HASHNODE_API_KEY: ${{ secrets.HASHNODE_API_KEY }}
           PUBLICATION_ID: "67b85c96db24890a6b202cb9"  # Your publication ID
-          HASHNODE_USERNAME: "YOUR_USERNAME"  # Your Hashnode username
+          HASHNODE_USERNAME: "PrashantBhaga"  # Your Hashnode username
         run: |
           for file in posts/*.md; do
             if [ -f "$file" ]; then
