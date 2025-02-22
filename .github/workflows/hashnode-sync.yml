@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "posts/*.md"
+      - "posts/**"
 
 jobs:
   publish-to-hashnode:
@@ -14,29 +14,68 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install jq for JSON parsing
-        run: sudo apt-get install jq -y
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-      - name: Convert Markdown & Publish to Hashnode
+      - name: Install Dependencies
+        run: |
+          npm install @graphql-request/core graphql
+
+      - name: Publish to Hashnode
+        env:
+          HASHNODE_API_KEY: ${{ secrets.HASHNODE_API_KEY }}
+          PUBLICATION_ID: "67b85c96db24890a6b202cb9"  # Your publication ID
+          HASHNODE_USERNAME: "PrashantBhaga"  # Your Hashnode username
         run: |
           for file in posts/*.md; do
-            [ -e "$file" ] || continue
-            TITLE=$(head -n 1 "$file" | sed 's/# //')
-            CONTENT=$(cat "$file" | sed ':a;N;$!ba;s/\n/\\n/g')
+            if [ -f "$file" ]; then
+              # Extract frontmatter and content
+              title=$(grep -m 1 "^title:" "$file" | sed 's/^title: *//')
+              if [ -z "$title" ]; then
+                title=$(basename "$file" .md)
+              fi
+              
+              # Prepare content with proper escaping
+              content=$(cat "$file" | node -e "
+                const fs = require('fs');
+                const content = fs.readFileSync(0, 'utf-8');
+                console.log(JSON.stringify(content));
+              ")
 
-            curl -X POST "https://api.hashnode.com" \
-              -H "Content-Type: application/json" \
-              -H "Authorization: ${{ secrets.HASHNODE_API_KEY }}" \
-              --data '{
-                "query": "mutation createStory($input: CreateStoryInput!) { createStory(input: $input) { id } }",
-                "variables": {
-                  "input": {
-                    "title": "'"$TITLE"'",
-                    "contentMarkdown": "'"$CONTENT"'",
-                    "isPartOfPublication": { "publicationId": "67b85c96db24890a6b202cb9" },
-                    "publishAs": "YOUR_HASHNODE_USERNAME",
-                    "isDraft": false
+              # Create GraphQL mutation
+              mutation='
+                mutation createStory($input: CreateStoryInput!) {
+                  createStory(input: $input) {
+                    code
+                    success
+                    message
+                    post {
+                      _id
+                      title
+                    }
                   }
                 }
-              }'
+              '
+
+              # Send to Hashnode API
+              response=$(curl -s -X POST https://api.hashnode.com \
+                -H "Content-Type: application/json" \
+                -H "Authorization: $HASHNODE_API_KEY" \
+                -d "{
+                  \"query\": \"$mutation\",
+                  \"variables\": {
+                    \"input\": {
+                      \"title\": $title,
+                      \"contentMarkdown\": $content,
+                      \"publicationId\": \"$PUBLICATION_ID\",
+                      \"tags\": [],
+                      \"isDraft\": false
+                    }
+                  }
+                }")
+
+              echo "Response for $file: $response"
+            fi
           done
