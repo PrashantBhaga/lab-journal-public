@@ -14,68 +14,83 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install Dependencies
+      - name: List Files in Posts Directory
         run: |
-          npm install @graphql-request/core graphql
+          echo "Contents of posts directory:"
+          ls -la posts/
+          
+      - name: Check File Content
+        run: |
+          for file in posts/*.md; do
+            echo "Processing file: $file"
+            echo "First few lines of content:"
+            head -n 5 "$file"
+            echo "-------------------"
+          done
+
+      - name: Test Hashnode API Connection
+        run: |
+          echo "Testing Hashnode API connection..."
+          curl -s -I -H "Authorization: ${{ secrets.HASHNODE_API_KEY }}" \
+               -H "Content-Type: application/json" \
+               https://api.hashnode.com
 
       - name: Publish to Hashnode
         env:
           HASHNODE_API_KEY: ${{ secrets.HASHNODE_API_KEY }}
-          PUBLICATION_ID: "67b85c96db24890a6b202cb9"  # Your publication ID
-          HASHNODE_USERNAME: "PrashantBhaga"  # Your Hashnode username
+          PUBLICATION_ID: "67b85c96db24890a6b202cb9"
         run: |
           for file in posts/*.md; do
             if [ -f "$file" ]; then
-              # Extract frontmatter and content
-              title=$(grep -m 1 "^title:" "$file" | sed 's/^title: *//')
-              if [ -z "$title" ]; then
-                title=$(basename "$file" .md)
+              echo "Processing: $file"
+              
+              # Read and validate frontmatter
+              if grep -q "^---" "$file"; then
+                echo "Found frontmatter in $file"
+              else
+                echo "Warning: No frontmatter found in $file"
               fi
               
-              # Prepare content with proper escaping
-              content=$(cat "$file" | node -e "
-                const fs = require('fs');
-                const content = fs.readFileSync(0, 'utf-8');
-                console.log(JSON.stringify(content));
-              ")
-
-              # Create GraphQL mutation
-              mutation='
-                mutation createStory($input: CreateStoryInput!) {
-                  createStory(input: $input) {
-                    code
-                    success
-                    message
-                    post {
-                      _id
-                      title
+              # Extract title from frontmatter or filename
+              title=$(sed -n '/^title:/p' "$file" | sed 's/^title: *//')
+              if [ -z "$title" ]; then
+                title=$(basename "$file" .md)
+                echo "No title found in frontmatter, using filename: $title"
+              else
+                echo "Found title: $title"
+              fi
+              
+              # Read content with error checking
+              if content=$(cat "$file"); then
+                echo "Successfully read file content"
+                
+                # Attempt to post to Hashnode
+                response=$(curl -s -X POST https://api.hashnode.com \
+                  -H "Content-Type: application/json" \
+                  -H "Authorization: ${{ secrets.HASHNODE_API_KEY }}" \
+                  -d "{
+                    \"query\": \"mutation createStory(\$input: CreateStoryInput!) { createStory(input: \$input) { success message } }\",
+                    \"variables\": {
+                      \"input\": {
+                        \"title\": \"$title\",
+                        \"contentMarkdown\": $(echo "$content" | jq -R -s .),
+                        \"publicationId\": \"$PUBLICATION_ID\",
+                        \"isPartOfPublication\": {\"publicationId\": \"$PUBLICATION_ID\"},
+                        \"tags\": []
+                      }
                     }
-                  }
-                }
-              '
-
-              # Send to Hashnode API
-              response=$(curl -s -X POST https://api.hashnode.com \
-                -H "Content-Type: application/json" \
-                -H "Authorization: $HASHNODE_API_KEY" \
-                -d "{
-                  \"query\": \"$mutation\",
-                  \"variables\": {
-                    \"input\": {
-                      \"title\": $title,
-                      \"contentMarkdown\": $content,
-                      \"publicationId\": \"$PUBLICATION_ID\",
-                      \"tags\": [],
-                      \"isDraft\": false
-                    }
-                  }
-                }")
-
-              echo "Response for $file: $response"
+                  }")
+                
+                echo "Hashnode API Response:"
+                echo "$response"
+                
+                if echo "$response" | grep -q "error"; then
+                  echo "Error detected in response"
+                  exit 1
+                fi
+              else
+                echo "Failed to read file content"
+                exit 1
+              fi
             fi
           done
