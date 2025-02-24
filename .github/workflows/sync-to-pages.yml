@@ -1,0 +1,79 @@
+name: Sync to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'posts/**'  # Only trigger when posts are updated
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout lab journal
+        uses: actions/checkout@v3
+        with:
+          path: lab-journal
+      
+      - name: Checkout GitHub Pages repository
+        uses: actions/checkout@v3
+        with:
+          repository: prashantbhaga/prashantbhaga.github.io
+          token: ${{ secrets.CONTENT_SYNC_TOKEN }}
+          path: github-pages
+      
+      - name: Set up date directories
+        run: |
+          # Create _posts directory if it doesn't exist
+          mkdir -p github-pages/_posts
+      
+      - name: Format and copy posts
+        run: |
+          for file in lab-journal/posts/*.md; do
+            if [ -f "$file" ]; then
+              # Get the filename without path
+              filename=$(basename "$file")
+              
+              # Extract front matter if exists or create it
+              if grep -q "^---" "$file"; then
+                # File already has front matter, just prepare for copying
+                echo "Processing $filename (has frontmatter)"
+              else
+                # Create a temporary file with front matter
+                echo "Processing $filename (adding frontmatter)"
+                tempfile=$(mktemp)
+                
+                # Create Jekyll-compatible front matter
+                echo "---" > "$tempfile"
+                echo "layout: post" >> "$tempfile"
+                echo "title: \"$(basename "$file" .md)\"" >> "$tempfile"
+                echo "date: $(date -u "+%Y-%m-%d %H:%M:%S %z")" >> "$tempfile"
+                echo "categories: lab-notes" >> "$tempfile"
+                echo "---" >> "$tempfile"
+                
+                # Append original content
+                cat "$file" >> "$tempfile"
+                
+                # Replace original file with temp file
+                cp "$tempfile" "$file"
+                rm "$tempfile"
+              fi
+              
+              # Create a Jekyll-compatible filename (YYYY-MM-DD-title.md)
+              jekyll_filename="$(date +%Y-%m-%d)-$(basename "$filename")"
+              
+              # Copy to _posts directory
+              cp "$file" "github-pages/_posts/$jekyll_filename"
+              echo "Copied to github-pages/_posts/$jekyll_filename"
+            fi
+          done
+      
+      - name: Commit and push changes
+        run: |
+          cd github-pages
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git diff --quiet && git diff --staged --quiet || git commit -m "Sync lab journal posts $(date +%Y%m%d%H%M%S)"
+          git push
