@@ -9,6 +9,7 @@ tags:
 cover: Optional cover image URL
 ---
 
+Dont get freaked out about "prompt engineering"... its just about learning how to speak and delegate well :)
 
 Good prompt ---> Great Prompt
 
