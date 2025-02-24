@@ -6,3 +6,4 @@ tags:
   - "#ShareYourWork"
 cover:
 ---
+I want to share my work on projects that I'll be exploring (everything is still a work in progress)
