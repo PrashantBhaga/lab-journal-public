@@ -1,78 +1,28 @@
-name: Sync Markdown Posts to Hashnode
+name: Publish to Hashnode
 
 on:
   push:
     branches:
-      - main
+      - master
     paths:
-      - "posts/**"
-
+      - 'posts/**'
 jobs:
-  publish-to-hashnode:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
-
+          node-version: 20
+      - name: Install dependencies
+        run: npm install
       - name: Publish to Hashnode
+        uses: PritishMishraa/hashnode-publish-action@v1.0.2
+        with:
+          src: blogs
+          HASHNODE_PAT: ${{ secrets.HASHNODE_PAT }}
+      - name: (AUTO COMMIT) Update Status to Published
+        uses: mikeal/publish-to-github-action@master
         env:
-          HASHNODE_API_KEY: ${{ secrets.HASHNODE_API_KEY }}
-          PUBLICATION_ID: "67b85c96db24890a6b202cb9"
-        run: |
-          for file in posts/*.md; do
-            if [ -f "$file" ]; then
-              echo "Processing file: $file"
-              
-              # Extract title and tags from the file content
-              title=$(grep -A1 "title" "$file" | tail -n1 | xargs)
-              tags=$(grep -A1 "tags" "$file" | tail -n1 | tr ' ' ',')
-              
-              # If no title found, use filename
-              if [ -z "$title" ]; then
-                title=$(basename "$file" .md)
-              fi
-              
-              echo "Title: $title"
-              echo "Tags: $tags"
-              
-              # Get content after the frontmatter table
-              content=$(awk '/^$/{p=1;next} p{print}' "$file")
-              
-              # Escape content for JSON
-              content_escaped=$(echo "$content" | jq -Rs .)
-              
-              # Create the GraphQL mutation
-              query='{
-                "query": "mutation createPublication($input: CreateStoryInput!) { createStory(input: $input) { success message post { _id title slug } } }",
-                "variables": {
-                  "input": {
-                    "title": "'"$title"'",
-                    "contentMarkdown": '"$content_escaped"',
-                    "isPartOfPublication": {
-                      "publicationId": "'"$PUBLICATION_ID"'"
-                    },
-                    "tags": ['"$(echo "$tags" | sed 's/#//g' | sed 's/\([^,]*\)/{"_id": "", "name": "\1", "slug": "\1"}/g' | tr '\n' ',' | sed 's/,$//')"']
-                  }
-                }
-              }'
-              
-              echo "Sending request to Hashnode..."
-              response=$(curl -s -X POST https://api.hashnode.com \
-                -H "Content-Type: application/json" \
-                -H "Authorization: $HASHNODE_API_KEY" \
-                -d "$query")
-              
-              echo "Response from Hashnode:"
-              echo "$response" | jq '.'
-              
-              if echo "$response" | grep -q "error"; then
-                echo "Error publishing to Hashnode"
-                exit 1
-              fi
-            fi
-          done
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # ... add more steps as needed
