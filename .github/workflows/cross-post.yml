@@ -1,0 +1,41 @@
+name: Cross-Post to Platforms
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'posts/**'
+
+jobs:
+  cross-post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Find changed markdown files
+        id: changed-files
+        uses: tj-actions/changed-files@v18.7
+        with:
+          files: 'posts/**/*.md'
+      
+      - name: Set up Node.js
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      
+      - name: Install dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: npm install axios gray-matter
+      
+      - name: Cross-post content
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "Processing $file for cross-posting..."
+            node .github/scripts/share-content.js "$file"
+          done
+        env:
+          INDIEHACKERS_API_KEY: ${{ secrets.INDIEHACKERS_API_KEY }}
