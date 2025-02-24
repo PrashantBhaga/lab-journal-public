@@ -7,6 +7,7 @@ tags:
   - "#LeadingAndManaging/HowToAskAnEmployeeWhatToDo"
   - "#PromptEngineering"
 cover: Optional cover image URL
+Post Slug: prompt-engineering-is-just-another-method-of-delegating
 ---
 
 *Dont get freaked out about "prompt engineering"... its just about learning how to speak and delegate well :)*
