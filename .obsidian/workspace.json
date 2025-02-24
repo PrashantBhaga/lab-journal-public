@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "posts/The start of me working in public.md",
+                "file": "posts/Prompt Engineering is just another method to delegate well (to Ai).md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "The start of me working in public"
+              "title": "Prompt Engineering is just another method to delegate well (to Ai)"
             }
           }
         ],
@@ -213,8 +213,8 @@
   },
   "active": "359831f1d105383a",
   "lastOpenFiles": [
-    "posts/this is the start of me working in public.md",
     "posts/The start of me working in public.md",
+    "posts/this is the start of me working in public.md",
     "posts/Prompt Engineering is just another method to delegate well (to Ai).md",
     "posts/new test",
     "draft-67b85cba04846a6ab7ba753e.md",
