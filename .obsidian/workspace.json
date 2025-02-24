@@ -62,9 +62,23 @@
               "icon": "lucide-file",
               "title": "Prompt Engineering is just another method to delegate well (to Ai)"
             }
+          },
+          {
+            "id": "d07058352ef81d74",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "posts/Creating a system to help me get my work into the real world.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Creating a system to help me get my work into the real world"
+            }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -211,11 +225,12 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "359831f1d105383a",
+  "active": "73eedc16e752ed4f",
   "lastOpenFiles": [
+    "posts/Prompt Engineering is just another method to delegate well (to Ai).md",
+    "posts/Creating a system to help me get my work into the real world.md",
     "posts/The start of me working in public.md",
     "posts/this is the start of me working in public.md",
-    "posts/Prompt Engineering is just another method to delegate well (to Ai).md",
     "posts/new test",
     "draft-67b85cba04846a6ab7ba753e.md",
     "posts/Prompting Engineering is just about delegating effectively.md",
