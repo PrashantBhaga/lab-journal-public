@@ -69,16 +69,44 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "posts/Creating a system to help me get my work into the real world.md",
+                "file": "posts/Prompt Engineering is just another method to delegate well (to Ai).md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Creating a system to help me get my work into the real world"
+              "title": "Prompt Engineering is just another method to delegate well (to Ai)"
+            }
+          },
+          {
+            "id": "334fc85b61e1fffd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "posts/collaboration will take the idea of growing technology naturally further, and make them more innovative.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "collaboration will take the idea of growing technology naturally further, and make them more innovative"
+            }
+          },
+          {
+            "id": "e12274677ade7192",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "posts/Decentralized by Design- How Nature Distributes Intelligence.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Decentralized by Design- How Nature Distributes Intelligence"
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 6
       }
     ],
     "direction": "vertical"
@@ -227,12 +255,15 @@
   },
   "active": "73eedc16e752ed4f",
   "lastOpenFiles": [
+    "posts/collaboration will take the idea of growing technology naturally further, and make them more innovative.md",
+    "posts/Decentralized by Design- How Nature Distributes Intelligence.md",
     "posts/Prompt Engineering is just another method to delegate well (to Ai).md",
+    "draft-67b85cba04846a6ab7ba753e.md",
     "posts/Creating a system to help me get my work into the real world.md",
+    "Working on getting a system for sharing up and running..md",
     "posts/The start of me working in public.md",
     "posts/this is the start of me working in public.md",
     "posts/new test",
-    "draft-67b85cba04846a6ab7ba753e.md",
     "posts/Prompting Engineering is just about delegating effectively.md",
     "posts/Prompting Engineering is just about delegating effectively (with frontmatter).md",
     "untitled folder",
