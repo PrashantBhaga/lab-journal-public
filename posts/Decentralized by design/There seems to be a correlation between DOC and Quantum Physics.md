@@ -27,6 +27,6 @@ These conceptual bridges are helping me develop more robust models for distribut
 
 I'm continuing to explore these connections and their implications for system design. If you have insights from either field that might contribute to this conceptual mapping, I'd welcome your thoughts in the comments.
 
-*Note: This cross-disciplinary framework represents my original research and thinking. If you find these ideas valuable in your own work, I'd appreciate appropriate attribution.*
+***Note: This cross-disciplinary framework represents my original research and thinking. If you find these ideas valuable in your own work, I'd appreciate appropriate attribution.***
 
 ---
