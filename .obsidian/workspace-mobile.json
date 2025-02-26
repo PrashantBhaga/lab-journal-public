@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Working on getting a system for sharing up and running..md",
+                "file": "posts/wandering, with purpose ?.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Working on getting a system for sharing up and running."
+              "title": "wandering, with purpose ?"
             }
           }
         ]
@@ -153,9 +153,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "7837d923eb5a375b",
+  "active": "92b2a5fe235e27ad",
   "lastOpenFiles": [
-    "posts/Creating a system to help me get my work into the real world.md",
-    "Working on getting a system for sharing up and running..md"
+    "Working on getting a system for sharing up and running..md",
+    "posts/wandering, with purpose ?.md",
+    "posts/Decentralized by design/Decentralized by Design- How Nature Distributes Intelligence.md",
+    "posts/Decentralized by design/Biomimetic Computing- Learning from 3.8 Billion Years of R&D.md",
+    "posts/Decentralized by design",
+    "posts/Creating a system to help me get my work into the real world.md"
   ]
 }
