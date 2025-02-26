@@ -28,44 +28,37 @@ jobs:
           # Create _posts directory if it doesn't exist
           mkdir -p github-pages/_posts
       
-      - name: Format and copy posts
+      - name: Format and sync posts
         run: |
           for file in lab-journal/posts/*.md; do
             if [ -f "$file" ]; then
-              # Get the filename without path
               filename=$(basename "$file")
+              jekyll_filename="$(date +%Y-%m-%d)-$filename"
               
-              # Extract front matter if exists or create it
-              if grep -q "^---" "$file"; then
-                # File already has front matter, just prepare for copying
-                echo "Processing $filename (has frontmatter)"
+              # Check if the file already exists
+              if [ -f "github-pages/_posts/$jekyll_filename" ]; then
+                echo "$jekyll_filename already exists. Skipping."
               else
-                # Create a temporary file with front matter
-                echo "Processing $filename (adding frontmatter)"
-                tempfile=$(mktemp)
+                echo "Processing $filename"
                 
-                # Create Jekyll-compatible front matter
-                echo "---" > "$tempfile"
-                echo "layout: post" >> "$tempfile"
-                echo "title: \"$(basename "$file" .md)\"" >> "$tempfile"
-                echo "date: $(date -u "+%Y-%m-%d %H:%M:%S %z")" >> "$tempfile"
-                echo "categories: lab-notes" >> "$tempfile"
-                echo "---" >> "$tempfile"
+                # Add front matter if not already present
+                if ! grep -q "^---" "$file"; then
+                  tempfile=$(mktemp)
+                  echo "---" > "$tempfile"
+                  echo "layout: post" >> "$tempfile"
+                  echo "title: \"$(basename "$file" .md)\"" >> "$tempfile"
+                  echo "date: $(date -u "+%Y-%m-%d %H:%M:%S %z")" >> "$tempfile"
+                  echo "categories: lab-notes" >> "$tempfile"
+                  echo "---" >> "$tempfile"
+                  cat "$file" >> "$tempfile"
+                  cp "$tempfile" "$file"
+                  rm "$tempfile"
+                fi
                 
-                # Append original content
-                cat "$file" >> "$tempfile"
-                
-                # Replace original file with temp file
-                cp "$tempfile" "$file"
-                rm "$tempfile"
+                # Copy new post
+                cp "$file" "github-pages/_posts/$jekyll_filename"
+                echo "Synced $jekyll_filename"
               fi
-              
-              # Create a Jekyll-compatible filename (YYYY-MM-DD-title.md)
-              jekyll_filename="$(date +%Y-%m-%d)-$(basename "$filename")"
-              
-              # Copy to _posts directory
-              cp "$file" "github-pages/_posts/$jekyll_filename"
-              echo "Copied to github-pages/_posts/$jekyll_filename"
             fi
           done
       
@@ -77,3 +70,6 @@ jobs:
           git add .
           git diff --quiet && git diff --staged --quiet || git commit -m "Sync lab journal posts $(date +%Y%m%d%H%M%S)"
           git push
+
+
+# I added a check to see if a post with the same filename already exists in the target repo. If it does, the script skips that file, preventing duplication. Let me know if you’d like me to refine it further or add extra functionality! 🚀
