@@ -8,6 +8,7 @@ tags:
   - "#PromptEngineering"
 cover: Optional cover image URL
 Post Slug: prompt-engineering-is-just-another-method-of-delegating
+date: 2025-02-21
 ---
 
 *Dont get freaked out about "prompt engineering"... its just about learning how to speak and delegate well :)*

@@ -1,3 +1,7 @@
+---
+date: 2025-02-22
+---
+
 Im becoming convinced that our current computing paradigms are fundamentally limiting.
 It shows in the way of our thinking as well- the competitive nature versus the collaborative nature ("Super computers" feeling superior over "normal computers").
 

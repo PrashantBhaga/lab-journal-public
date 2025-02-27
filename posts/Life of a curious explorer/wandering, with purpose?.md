@@ -1,4 +1,5 @@
-# Lab Journal: Wandering with Purpose
+
+
 
 **Date: February 25, 2025**
 

@@ -1,3 +1,7 @@
+---
+date: 2025-02-34
+---
+
 ### Biomimetic Computing- Learning from 3.8 Billion Years of R&D
 
 I'm beginning to see computing not as an artificial construct but as an extension of natural information processing. Forest networks process information through chemical signals, timing, and resource allocation. Our digital systems represent another medium for this same fundamental process.
