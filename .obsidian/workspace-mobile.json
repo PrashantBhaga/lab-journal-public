@@ -11,10 +11,14 @@
             "id": "7837d923eb5a375b",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "posts/Life of a curious explorer/Building a brand is like building online real estate.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "Building a brand is like building online real estate"
             }
           }
         ]
@@ -152,6 +156,8 @@
   },
   "active": "7837d923eb5a375b",
   "lastOpenFiles": [
+    "posts/Life of a curious explorer/Monday Lab Note- The Weight of Uncertainty and the Seeds of Legacy.md",
+    "posts/Life of a curious explorer/Building a brand is like building online real estate.md",
     "posts/wandering, with purpose ?.md",
     "posts/Decentralized by design/Decentralized Organic Computing, and Quantum physics/The Quantum Forest- Where Nature Meets Physics.md",
     "posts/Decentralized by design/Decentralized Organic Computing, and Quantum physics",
