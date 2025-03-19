@@ -167,12 +167,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Testing DOC to prevent kidnappings..md",
+                "file": "Testing DOC to prevent kidnappings that are happening.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Testing DOC to prevent kidnappings."
+              "title": "Testing DOC to prevent kidnappings that are happening"
             }
           }
         ],
@@ -328,7 +328,7 @@
   "lastOpenFiles": [
     "_config.yml",
     "posts/Decentralized by design/Biomimetic Computing- Learning from 3.8 Billion Years of R&D.md",
-    "Testing DOC to prevent kidnappings..md",
+    "Testing DOC to prevent kidnappings that are happening.md",
     "posts/Sharing my work/Working on getting a system for sharing up and running..md",
     "posts/Decentralized by design/From Conversation to Concept- How a Dialogue with AI Inspired the Foundations of DOC.md",
     "posts/Life of a curious explorer/Building a brand is like building online real estate.md",
