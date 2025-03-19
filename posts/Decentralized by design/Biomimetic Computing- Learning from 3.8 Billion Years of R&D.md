@@ -1,5 +1,5 @@
 ---
-date: 2025-02-34
+date: 2025-02-24
 ---
 
 ### Biomimetic Computing- Learning from 3.8 Billion Years of R&D
