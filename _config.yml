@@ -1,0 +1,4 @@
+exclude:
+  - "Lab Notes Template"
+  - "**/*template*"
+  - "**/Template*"
